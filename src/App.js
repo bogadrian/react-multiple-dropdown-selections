@@ -32,9 +32,6 @@ function App() {
   // name
   function handlerNAME(event) {
     setData(data => ({ ...data, business_name_react: event.target.value }));
-    setLoadData(
-      loadData?.filter(el => el.business_name === event.target.value)
-    );
   }
 
   const filter_NAME = loadData.map((n, index) => {
@@ -48,54 +45,61 @@ function App() {
   //Countries
   function gestisciNAZIONE(event) {
     setData(data => ({ ...data, country_react: event.target.value }));
-    setLoadData(loadData?.filter(el => el.country === event.target.value));
   }
-  const filter_COUNTRY = loadData?.map((c, index) => {
-    return (
-      <option key={index} value={c.country}>
-        {c.country}
-      </option>
-    );
-  });
 
-  // Cities
-  function gestisciCITY(event) {
-    setData(data => ({ ...data, city_react: event.target.value }));
-    setLoadData(loadData?.filter(el => el.city === event.target.value));
-  }
-  const filter_CITY = loadData?.map((c, index) => {
-    return (
-      <option key={index} value={c.city}>
-        {c.city}
-      </option>
-    );
-  });
+  const filter_COUNTRY = loadData
+    ?.filter(n => {
+      return n.business_name === business_name_react;
+    })
+    ?.map((c, index) => {
+      return (
+        <option key={index} value={c.country}>
+          {c.country}
+        </option>
+      );
+    });
 
   // Province
   function gestisciPROVINCE(event) {
     setData(data => ({ ...data, province_react: event.target.value }));
-    setLoadData(loadData?.filter(el => el.province === event.target.value));
   }
-  const filter_PROVINCE = loadData?.map((c, index) => {
-    return (
-      <option key={index} value={c.province}>
-        {c.province}
-      </option>
-    );
-  });
+  const filter_PROVINCE = loadData
+    ?.filter(n => n.country === country_react)
+    .map((c, index) => {
+      return (
+        <option key={index} value={c.province}>
+          {c.province}
+        </option>
+      );
+    });
+  // Cities
+  function gestisciCITY(event) {
+    setData(data => ({ ...data, city_react: event.target.value }));
+  }
+
+  const filter_CITY = loadData
+    ?.filter(n => n.country === country_react)
+    .map((c, index) => {
+      return (
+        <option key={index} value={c.city}>
+          {c.city}
+        </option>
+      );
+    });
 
   // TYPES
   function gestisciTYPE(event) {
     setData(data => ({ ...data, types_react: event.target.value }));
-    setLoadData(loadData?.filter(el => el.types[0] === event.target.value));
   }
-  const filter_TYPE = loadData?.map((c, index) => {
-    return (
-      <option key={index} value={c.types[0]}>
-        {c.types[0]}
-      </option>
-    );
-  });
+  const filter_TYPE = loadData
+    ?.find(n => n.city === city_react)
+    ?.types?.map((c, index) => {
+      return (
+        <option key={index} value={c}>
+          {c}
+        </option>
+      );
+    });
 
   // *** SUBMIT - RETURN SELECTIONS FILTERING BY ID *** //
 
@@ -140,7 +144,6 @@ function App() {
             {filter_CITY}
           </select>
         </div>
-
         <div>
           <label htmlFor="province">PROVINCE: {''}</label>
           <select
