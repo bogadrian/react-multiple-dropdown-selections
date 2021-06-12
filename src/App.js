@@ -34,72 +34,95 @@ function App() {
     setData(data => ({ ...data, business_name_react: event.target.value }));
   }
 
-  const filter_NAME = loadData.map((n, index) => {
-    return (
-      <option key={index} value={n.business_name}>
-        {n.business_name}
-      </option>
-    );
-  });
+  const filter_NAME = [
+    ...new Set(
+      loadData.map((n, index) => {
+        return (
+          <option key={index} value={n.business_name}>
+            {n.business_name}
+          </option>
+        );
+      })
+    )
+  ];
 
   //Countries
   function gestisciNAZIONE(event) {
     setData(data => ({ ...data, country_react: event.target.value }));
   }
 
-  const filter_COUNTRY = loadData
-    ?.filter(n => {
-      return n.business_name === business_name_react;
-    })
-    ?.map((c, index) => {
-      return (
-        <option key={index} value={c.country}>
-          {c.country}
-        </option>
-      );
-    });
+  const filter_COUNTRY = [
+    ...new Set(
+      loadData
+        ?.filter(n => {
+          return n.business_name === business_name_react;
+        })
+        ?.map((c, index) => {
+          return (
+            <option key={index} value={c.country}>
+              {c.country}
+            </option>
+          );
+        })
+    )
+  ];
 
   // Province
+
   function gestisciPROVINCE(event) {
     setData(data => ({ ...data, province_react: event.target.value }));
   }
-  const filter_PROVINCE = loadData
-    ?.filter(n => n.country === country_react)
-    .map((c, index) => {
-      return (
-        <option key={index} value={c.province}>
-          {c.province}
-        </option>
-      );
-    });
+
+  const filter_PROVINCE = [
+    ...new Set(
+      loadData
+        ?.filter(n => n.country === country_react)
+        .map((c, index) => {
+          return (
+            <option key={index} value={c.province}>
+              {c.province}
+            </option>
+          );
+        })
+    )
+  ];
+
   // Cities
   function gestisciCITY(event) {
     setData(data => ({ ...data, city_react: event.target.value }));
   }
 
-  const filter_CITY = loadData
-    ?.filter(n => n.country === country_react)
-    .map((c, index) => {
-      return (
-        <option key={index} value={c.city}>
-          {c.city}
-        </option>
-      );
-    });
+  const filter_CITY = [
+    ...new Set(
+      loadData
+        ?.filter(n => n.province === province_react)
+        .map((c, index) => {
+          return (
+            <option key={index} value={c.city}>
+              {c.city}
+            </option>
+          );
+        })
+    )
+  ];
 
   // TYPES
   function gestisciTYPE(event) {
     setData(data => ({ ...data, types_react: event.target.value }));
   }
-  const filter_TYPE = loadData
-    ?.find(n => n.city === city_react)
-    ?.types?.map((c, index) => {
-      return (
-        <option key={index} value={c}>
-          {c}
-        </option>
-      );
-    });
+  const filter_TYPE = [
+    ...new Set(
+      loadData
+        ?.find(n => n.city === city_react)
+        ?.types?.map((c, index) => {
+          return (
+            <option key={index} value={c}>
+              {c}
+            </option>
+          );
+        })
+    )
+  ];
 
   // *** SUBMIT - RETURN SELECTIONS FILTERING BY ID *** //
 
@@ -137,13 +160,6 @@ function App() {
             {filter_COUNTRY}
           </select>
         </div>
-
-        <div>
-          <label htmlFor="city">CITY: {''}</label>
-          <select id="city" value={city_react} onChange={gestisciCITY}>
-            {filter_CITY}
-          </select>
-        </div>
         <div>
           <label htmlFor="province">PROVINCE: {''}</label>
           <select
@@ -154,6 +170,13 @@ function App() {
             {filter_PROVINCE}
           </select>
         </div>
+        <div>
+          <label htmlFor="city">CITY: {''}</label>
+          <select id="city" value={city_react} onChange={gestisciCITY}>
+            {filter_CITY}
+          </select>
+        </div>
+
         <div>
           <label htmlFor="types">TYPES: {''}</label>
           <select id="types" value={types_react} onChange={gestisciTYPE}>
